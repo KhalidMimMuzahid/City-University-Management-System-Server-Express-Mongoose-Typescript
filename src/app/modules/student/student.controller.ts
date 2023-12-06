@@ -1,26 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { StudentService } from './student.service';
 
-const getAllStudents = async (req: Request, res: Response) => {
-  try {
-    const results = await StudentService.getAllStudentsFromDB();
-
-    res.status(200).json({
-      success: true,
-      message: 'students were retrieved successfully',
-      data: results,
-    });
-  } catch (error) {
-    res.status(400).json({
-      success: false,
-      message: 'Something went wrong',
-      error: error,
-    });
-  }
-};
-
-const getSingleSTudent = async (req: Request, res: Response) => {
+const getSingleSTudent = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const { studentId } = req.params;
     const result = await StudentService.getSingleStudentFromDB(studentId);
@@ -31,15 +17,33 @@ const getSingleSTudent = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (error) {
-    res.status(400).json({
-      success: false,
-      message: 'Something went wrong',
-      error: error,
-    });
+    next(error);
   }
 };
 
-const deleteSingleSTudent = async (req: Request, res: Response) => {
+const getAllStudents = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const results = await StudentService.getAllStudentsFromDB();
+
+    res.status(200).json({
+      success: true,
+      message: 'students were retrieved successfully',
+      data: results,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const deleteSingleSTudent = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const { studentId } = req.params;
     const result = await StudentService.deleteSingleStudentFromDB(studentId);
@@ -50,11 +54,7 @@ const deleteSingleSTudent = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (error) {
-    res.status(400).json({
-      success: false,
-      message: 'Something went wrong',
-      error: error,
-    });
+    next(error);
   }
 };
 export const studentControllers = {

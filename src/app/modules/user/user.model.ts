@@ -50,6 +50,8 @@ userSchema.pre('save', async function (next) {
 // post save middleware / hook : will work on create() or save() after saving
 userSchema.post('save', function (doc, next) {
   // console.log('post hook: we have saved the data');
+
+  //remove password field after saving user for sending response to the user
   doc.password = undefined;
   next();
 });
