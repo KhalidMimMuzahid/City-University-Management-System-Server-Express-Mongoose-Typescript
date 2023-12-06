@@ -1,4 +1,5 @@
-import { Model } from 'mongoose';
+/* eslint-disable no-unused-vars */
+import { Model, Types } from 'mongoose';
 
 export type TGuardian = {
   father: {
@@ -31,6 +32,7 @@ export type TEmergencyContact = {
 };
 export interface TStudent {
   id: string;
+  user_id: Types.ObjectId;
   password: string;
   name: TUserName;
   gender: 'Male' | 'Female' | 'Other';
@@ -45,12 +47,8 @@ export interface TStudent {
   guardian: TGuardian;
   localGuardian: TLocalGuardian;
   profileImage?: string;
-  isActive: 'active' | 'blocked';
   isDeleted: boolean;
 }
-
-
-
 
 // -----------------------xxxxxxxxxxxxxxxxx-----------------------
 //for creating instance methods
