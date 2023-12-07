@@ -1,5 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { userServices } from './user.service';
+import sendResponse from '../../utuls/sendResponse';
+import httpStatus from 'http-status';
 // import userValidationSchemaByZod from './user.validation';
 
 const createStudent = async (
@@ -22,7 +24,8 @@ const createStudent = async (
     );
 
     // send response
-    res.status(200).json({
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
       success: true,
       message: 'Student created successfully',
       data: result,
