@@ -1,16 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { NextFunction, Request, RequestHandler, Response } from 'express';
+import { RequestHandler } from 'express';
 import { StudentService } from './student.service';
-import sendResponse from '../../utuls/sendResponse';
+import sendResponse from '../../utils/sendResponse';
 import httpStatus from 'http-status';
+import catchAsync from '../../utils/catchAsync';
 
-const catchAsync = (fn: RequestHandler) => {
-  return (req: Request, res: Response, next: NextFunction) => {
-    Promise.resolve(fn(req, res, next)).catch((err) => next(err));
-  };
-};
-
-const getSingleSTudent = catchAsync(async (req, res, next) => {
+const getSingleSTudent = catchAsync(async (req, res) => {
   const { studentId } = req.params;
   const result = await StudentService.getSingleStudentFromDB(studentId);
 
@@ -23,7 +18,7 @@ const getSingleSTudent = catchAsync(async (req, res, next) => {
   });
 });
 
-const getAllStudents: RequestHandler = catchAsync(async (req, res, next) => {
+const getAllStudents: RequestHandler = catchAsync(async (req, res) => {
   const result = await StudentService.getAllStudentsFromDB();
 
   // send response
@@ -35,20 +30,18 @@ const getAllStudents: RequestHandler = catchAsync(async (req, res, next) => {
   });
 });
 
-const deleteSingleSTudent: RequestHandler = catchAsync(
-  async (req, res, next) => {
-    const { studentId } = req.params;
-    const result = await StudentService.deleteSingleStudentFromDB(studentId);
+const deleteSingleSTudent: RequestHandler = catchAsync(async (req, res) => {
+  const { studentId } = req.params;
+  const result = await StudentService.deleteSingleStudentFromDB(studentId);
 
-    // send response
-    sendResponse(res, {
-      statusCode: httpStatus.OK,
-      success: true,
-      message: 'Student has deleted successfully',
-      data: result,
-    });
-  },
-);  
+  // send response
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Student has deleted successfully',
+    data: result,
+  });
+});  
 export const studentControllers = {
   getAllStudents,
   getSingleSTudent,

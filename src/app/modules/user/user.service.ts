@@ -16,6 +16,10 @@ const createStudentIntoDB = async (password: string, studentData: TStudent) => {
 
   //manually generated id
   userData.id = '2030100001';
+  // year= 2023
+  // semester code spring="01", summer="02", fall="03",
+  // batch
+  //subjectCode  CSE0
   //create a user
   const newUser = await User.create(userData);
 
