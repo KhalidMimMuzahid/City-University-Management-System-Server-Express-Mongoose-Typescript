@@ -15,7 +15,6 @@ const createStudent: RequestHandler = catchAsync(async (req, res) => {
   // const parseData = userValidationSchemaByZod(userData);
 
   const result = await userServices.createStudentIntoDB(password, studentData);
-
   // send response
   sendResponse(res, {
     statusCode: httpStatus.OK,

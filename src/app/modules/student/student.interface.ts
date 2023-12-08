@@ -38,7 +38,7 @@ export interface TStudent {
   gender: 'Male' | 'Female' | 'Other';
   email: string;
   avatar?: string;
-  dateOfBirth?: Date;
+  dateOfBirth?: string;
   contactNo: string;
   emergencyContact: TEmergencyContact;
   bloodGroup?: 'A+' | 'A-' | 'B+' | 'B-' | 'O+' | 'O-' | 'AB+' | 'AB-';
@@ -47,6 +47,7 @@ export interface TStudent {
   guardian: TGuardian;
   localGuardian: TLocalGuardian;
   profileImage?: string;
+  admissionSemester_id: Types.ObjectId;
   isDeleted: boolean;
 }
 
