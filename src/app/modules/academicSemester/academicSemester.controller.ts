@@ -42,8 +42,30 @@ const getSingleAcademicSemesterBy_id = catchAsync(async (req, res) => {
     data: result,
   });
 });
+
+
+
+const updateSingleAcademicSemesterBy_id: RequestHandler = catchAsync(
+  async (req, res) => {
+    const semester_id = req?.params?.semester_id;
+    const result = await academicSemesterServices.updateAcademicSemesterIntoDB(
+      semester_id,
+      req.body,
+    );
+
+    //   send response
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Academic Semester is updated successfully',
+      data: result,
+    });
+  },
+);
+
 export const academicSemesterControllers = {
   createAcademicSemester,
   getAllAcademicSemesters,
   getSingleAcademicSemesterBy_id,
+  updateSingleAcademicSemesterBy_id,
 };
