@@ -13,7 +13,7 @@ const findLastStudent = async () => {
   )
     .sort({ createdAt: -1 })
     .limit(1);
-  return lastStudent?.id ? lastStudent.id.substring(6) : undefined;
+  return lastStudent?.id ? lastStudent.id : undefined;
 };
 
 const generateStudentId = async (payload: TAcademicSemester) => {
@@ -22,11 +22,27 @@ const generateStudentId = async (payload: TAcademicSemester) => {
   //roll = "0001" or "0002"
   //create a user
   //first time 0000
-  const currentId = (await findLastStudent()) || (0).toString();
+  let currentId = (0).toString();
+
+  const lastStudentId = await findLastStudent();
+  //let lastStudentId = 2030 01 0001
+  console.log({ lastStudentId });
+  const lastStudentSemesterCode = lastStudentId?.substring(4, 6); //01
+  const lastStudentSemesterYear = lastStudentId?.substring(0, 4); //2030
+  const currentStudentSemesterCode = payload?.code;
+  const currentStudentSemesterYear = payload?.year;
+
+  if (
+    lastStudentId &&
+    lastStudentSemesterCode === currentStudentSemesterCode &&
+    lastStudentSemesterYear === currentStudentSemesterYear
+  ) {
+    currentId = lastStudentId?.substring(6);
+  }
 
   let inCrementId = (Number(currentId) + 1).toString().padStart(4, '0');
 
-  inCrementId = `${payload.year}${payload.code}${inCrementId}`;
+  inCrementId = `${payload?.year}${payload?.code}${inCrementId}`;
 
   return inCrementId;
 };
