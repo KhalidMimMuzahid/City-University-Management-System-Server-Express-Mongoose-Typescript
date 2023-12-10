@@ -61,6 +61,9 @@ const createStudentValidationSchemaByZod = z.object({
       permanentAddress: z.string().min(1),
       guardian: guardianValidationSchema,
       localGuardian: localGuardianValidationSchema,
+
+      admissionSemester_id: z.string(),
+      academicDepartment_id: z.string(),
       profileImage: z.string().optional(),
     }),
   }),

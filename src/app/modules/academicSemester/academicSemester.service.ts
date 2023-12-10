@@ -1,3 +1,5 @@
+import httpStatus from 'http-status';
+import AppError from '../../errors/AppError';
 import { academicSemesterNameCodeMapper } from './academicSemester.constant';
 import { TAcademicSemester } from './academicSemester.interface';
 import { AcademicSemester } from './academicSemester.model';
@@ -6,7 +8,7 @@ const createAcademicSemesterIntoDB = async (payload: TAcademicSemester) => {
   //semester name --> semester code
 
   if (academicSemesterNameCodeMapper[payload?.name] !== payload?.code) {
-    throw new Error('invalid semester Code');
+    throw new AppError(httpStatus.NOT_FOUND, 'invalid semester Code');
   }
   const result = await AcademicSemester.create(payload);
   return result;
@@ -20,7 +22,6 @@ const getSingleAcademicSemesterFromDB = async (semester_id: string) => {
   return result;
 };
 
-
 const updateAcademicSemesterIntoDB = async (
   semester_id: string,
   payload: TAcademicSemester,
@@ -28,25 +29,31 @@ const updateAcademicSemesterIntoDB = async (
   //semester name --> semester code
   const semester = await AcademicSemester.findOne({ _id: semester_id });
   if (!semester) {
-    throw new Error('semester is not found');
+    throw new AppError(httpStatus.NOT_FOUND, 'semester is not found');
   } else if (
     payload?.code &&
     payload?.name &&
     academicSemesterNameCodeMapper[payload?.name] !== payload?.code
   ) {
-    throw new Error('invalid semester Code');
+    throw new AppError(httpStatus.NOT_FOUND, 'invalid semester Code');
   } else if (
     payload?.code &&
     !payload?.name &&
     academicSemesterNameCodeMapper[semester?.name] !== payload?.code
   ) {
-    throw new Error('semester Code is not match with the semester name');
+    throw new AppError(
+      httpStatus.NOT_FOUND,
+      'semester Code is not match with the semester name',
+    );
   } else if (
     payload?.name &&
     !payload?.code &&
     academicSemesterNameCodeMapper[payload?.name] !== semester?.code
   ) {
-    throw new Error('semester name is not match with the semester code');
+    throw new AppError(
+      httpStatus.NOT_FOUND,
+      'semester name is not match with the semester code',
+    );
   }
   const result = await AcademicSemester.findOneAndUpdate(
     { _id: semester_id },
