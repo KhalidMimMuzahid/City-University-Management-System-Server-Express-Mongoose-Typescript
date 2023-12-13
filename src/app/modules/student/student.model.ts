@@ -9,6 +9,8 @@ import {
   TUserName,
   StudentModel,
 } from './student.interface';
+import AppError from '../../errors/AppError';
+import httpStatus from 'http-status';
 
 // creating a schema
 
@@ -202,35 +204,40 @@ studentSchema.statics.isUserExists = async (id: string) => {
 };
 
 // -------------######################################-------------// virtual  --> virtually add new field
-studentSchema.virtual('fullName').get(function(){
-  return `${this.name.firstName} ${this.name.middleName} ${this.name.lastName}`
-})
-
-
+studentSchema.virtual('fullName').get(function () {
+  return `${this.name.firstName} ${this.name.middleName} ${this.name.lastName}`;
+});
 
 // -------------######################################-------------// middlewares
 
 // -------------**************************************------------- // Document middlewares
 // pre save middleware/hook : will work on create() or save() before saving
 
-
 // -------------**************************************------------- // Query middlewares
-studentSchema.pre('find', function(next){
-// console.log("This is this: ",this)
-this.find({isDeleted: {$ne: true}})
-next()
-})
-studentSchema.pre('findOne', function(next){
-  this.findOne({isDeleted: {$ne: true}})
-  next()
-})
-studentSchema.pre('aggregate', function(next){
-
+studentSchema.pre('find', function (next) {
+  // console.log("This is this: ",this)
+  this.find({ isDeleted: { $ne: true } });
+  next();
+});
+studentSchema.pre('findOne', function (next) {
+  this.findOne({ isDeleted: { $ne: true } });
+  next();
+});
+studentSchema.pre('aggregate', function (next) {
   // console.log(this.pipeline())
-  this.pipeline().unshift({$match: {isDeleted: {$ne: true}}})
-  next()
-})
+  this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } });
+  next();
+});
 
+studentSchema.pre('findOneAndUpdate', async function (next) {
+  const query = this.getQuery();
+  const isStudentExists = await Student.isUserExists(query?.id);
+  if (!isStudentExists) {
+    throw new AppError(httpStatus.BAD_REQUEST, 'student not found');
+  }
+
+  next();
+});
 
 
 
