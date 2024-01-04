@@ -5,6 +5,8 @@ import { ErrorRequestHandler, NextFunction, Request, Response } from 'express';
 import { ZodError, ZodIssue } from 'zod';
 import { TErrorSources } from '../interface/error';
 import config from '../config';
+import handleZodError from '../errors/handleZodError';
+import handleValidationError from '../errors/handleValidationError';
 
 // if we use ErrorRequestHandler type we no need to declare the type of those {any Request Response NextFunction}
 const globalErrorHandler: ErrorRequestHandler = (error, req, res, next) => {
@@ -18,24 +20,17 @@ const globalErrorHandler: ErrorRequestHandler = (error, req, res, next) => {
       message: 'Something went wrong',
     },
   ];
-
-  const HandleZodError = (error: ZodError) => {
-    const statusCode = 400;
-    const errorSources: TErrorSources = error.issues.map((issue: ZodIssue) => {
-      return {
-        path: issue?.path[issue?.path?.length - 1],
-        message: issue?.message,
-      };
-    });
-    return {
-      statusCode,
-      message: 'Validation Error',
-      errorSources,
-    };
-  };
-
   if (error instanceof ZodError) {
-    const simplifiesError = HandleZodError(error);
+    const simplifiesError = handleZodError(error);
+    // errorSources
+
+    statusCode = simplifiesError?.statusCode;
+    message = simplifiesError?.message;
+    errorSources = simplifiesError?.errorSources;
+  } else if (error?.name === 'ValidationError') {
+    console.log('ami mongoose validation error');
+
+    const simplifiesError = handleValidationError(error);
     // errorSources
 
     statusCode = simplifiesError?.statusCode;
