@@ -38,8 +38,9 @@ const updateSingleSTudent = catchAsync(async (req, res) => {
 });
 
 const getAllStudents: RequestHandler = catchAsync(async (req, res) => {
-  const result = await StudentService.getAllStudentsFromDB();
-  console.log({ result });
+  const query: any = req?.query;
+  const result = await StudentService.getAllStudentsFromDB(query);
+  // console.log({ result });
   // send response
   sendResponse(res, {
     statusCode: httpStatus.OK,
