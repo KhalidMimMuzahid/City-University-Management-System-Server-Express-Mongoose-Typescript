@@ -205,7 +205,7 @@ studentSchema.statics.isUserExists = async (id: string) => {
 
 // -------------######################################-------------// virtual  --> virtually add new field
 studentSchema.virtual('fullName').get(function () {
-  return `${this.name.firstName} ${this.name.middleName} ${this.name.lastName}`;
+  return `${this?.name?.firstName} ${this?.name?.middleName} ${this?.name?.lastName}`;
 });
 
 // -------------######################################-------------// middlewares
