@@ -1,5 +1,5 @@
 import express, { Router } from 'express';
-import validateRequest from '../../utils/validateRequest';
+import validateRequest from '../../middlewares/validateRequest';
 import { academicDepartmentValidation } from './academicDepartment.validation';
 import { academicDepartmentControllers } from './academicDepartment.controller';
 const router: Router = express.Router();

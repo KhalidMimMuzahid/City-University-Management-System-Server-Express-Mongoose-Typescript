@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { Model, Types } from 'mongoose';
 
 export type TGender = 'male' | 'female' | 'other';
@@ -19,7 +20,7 @@ export type TUserName = {
 
 export type TAdmin = {
   id: string;
-  user: Types.ObjectId;
+  user_id: Types.ObjectId;
   designation: string;
   name: TUserName;
   gender: TGender;

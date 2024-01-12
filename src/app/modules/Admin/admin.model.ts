@@ -28,7 +28,7 @@ const adminSchema = new Schema<TAdmin, AdminModel>(
       required: [true, 'ID is required'],
       unique: true,
     },
-    user: {
+    user_id: {
       type: Schema.Types.ObjectId,
       required: [true, 'User id is required'],
       unique: true,

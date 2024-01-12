@@ -1,6 +1,6 @@
 import express, { Router } from 'express';
 import { studentControllers } from './student.controller';
-import validateRequest from '../../utils/validateRequest';
+import validateRequest from '../../middlewares/validateRequest';
 import { studentValidations } from './student.validation';
 
 const router: Router = express.Router();
@@ -9,10 +9,10 @@ const router: Router = express.Router();
 
 // router.post('/create-student', studentControllers.createStudent);
 router.get('/', studentControllers.getAllStudents);
-router.get('/:studentId', studentControllers.getSingleSTudent);
-router.delete('/:studentId', studentControllers.deleteSingleSTudent);
+router.get('/:_id', studentControllers.getSingleSTudent);
+router.delete('/:_id', studentControllers.deleteSingleSTudent);
 router.patch(
-  '/:studentId',
+  '/:_id',
   validateRequest(studentValidations.updateStudentValidationSchemaByZod),
 
   studentControllers.updateSingleSTudent,

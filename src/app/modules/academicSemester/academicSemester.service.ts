@@ -17,17 +17,17 @@ const getAllAcademicSemesterFromDB = async () => {
   const result = await AcademicSemester.find({});
   return result;
 };
-const getSingleAcademicSemesterFromDB = async (semester_id: string) => {
-  const result = await AcademicSemester.findOne({ _id: semester_id });
+const getSingleAcademicSemesterFromDB = async (_id: string) => {
+  const result = await AcademicSemester.findById(_id);
   return result;
 };
 
 const updateAcademicSemesterIntoDB = async (
-  semester_id: string,
+  _id: string,
   payload: TAcademicSemester,
 ) => {
   //semester name --> semester code
-  const semester = await AcademicSemester.findOne({ _id: semester_id });
+  const semester = await AcademicSemester.findById(_id);
   if (!semester) {
     throw new AppError(httpStatus.NOT_FOUND, 'semester is not found');
   } else if (
@@ -55,13 +55,9 @@ const updateAcademicSemesterIntoDB = async (
       'semester name is not match with the semester code',
     );
   }
-  const result = await AcademicSemester.findOneAndUpdate(
-    { _id: semester_id },
-    { ...payload, _id: semester_id },
-    {
-      new: true,
-    },
-  );
+  const result = await AcademicSemester.findByIdAndUpdate(_id, payload, {
+    new: true,
+  });
 
   return result;
 };

@@ -20,7 +20,7 @@ export type TUserName = {
 
 export type TFaculty = {
   id: string;
-  user: Types.ObjectId;
+  user_id: Types.ObjectId;
   designation: string;
   name: TUserName;
   gender: TGender;

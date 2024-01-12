@@ -1,6 +1,6 @@
 import express, { Router } from 'express';
 import { academicSemesterControllers } from './academicSemester.controller';
-import validateRequest from '../../utils/validateRequest';
+import validateRequest from '../../middlewares/validateRequest';
 import { academicSemesterValidation } from './academicSemester.validation';
 
 const router: Router = express.Router();
@@ -12,13 +12,10 @@ router.post(
   academicSemesterControllers.createAcademicSemester,
 );
 router.get('/', academicSemesterControllers.getAllAcademicSemesters);
-router.get(
-  '/:semester_id',
-  academicSemesterControllers.getSingleAcademicSemesterBy_id,
-);
+router.get('/:_id', academicSemesterControllers.getSingleAcademicSemesterBy_id);
 
 router.patch(
-  '/:semester_id',
+  '/:_id',
   validateRequest(
     academicSemesterValidation.updateAcademicSemesterValidationSchemaByZod,
   ),

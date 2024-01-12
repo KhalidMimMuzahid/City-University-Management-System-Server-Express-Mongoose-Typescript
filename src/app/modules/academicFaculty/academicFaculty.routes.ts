@@ -1,5 +1,5 @@
 import express, { Router } from 'express';
-import validateRequest from '../../utils/validateRequest';
+import validateRequest from '../../middlewares/validateRequest';
 import { academicFacultyValidation } from './academicFaculty.validation';
 import { academicFacultyControllers } from './academicFaculty.controllers';
 const router: Router = express.Router();
@@ -11,13 +11,10 @@ router.post(
   academicFacultyControllers.createAcademicFaculty,
 );
 router.get('/', academicFacultyControllers.getAllAcademicFaculties);
-router.get(
-  '/:faculty_id',
-  academicFacultyControllers.getSingleAcademicFacultyBy_id,
-);
+router.get('/:_id', academicFacultyControllers.getSingleAcademicFacultyBy_id);
 
 router.patch(
-  '/:faculty_id',
+  '/:_id',
   validateRequest(
     academicFacultyValidation.updateAcademicFacultyValidationSchemaByZod,
   ),

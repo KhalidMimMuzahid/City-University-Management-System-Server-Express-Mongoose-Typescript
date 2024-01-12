@@ -6,8 +6,8 @@ import httpStatus from 'http-status';
 import catchAsync from '../../utils/catchAsync';
 
 const getSingleSTudent = catchAsync(async (req, res) => {
-  const { studentId } = req.params;
-  const result = await StudentService.getSingleStudentFromDB(studentId);
+  const { _id } = req.params;
+  const result = await StudentService.getSingleStudentFromDB(_id);
 
   // send response
   sendResponse(res, {
@@ -19,14 +19,11 @@ const getSingleSTudent = catchAsync(async (req, res) => {
 });
 
 const updateSingleSTudent = catchAsync(async (req, res) => {
-  const { studentId } = req.params;
+  const { _id } = req.params;
 
   const { student } = req.body;
 
-  const result = await StudentService.updateSingleStudentInToDB(
-    studentId,
-    student,
-  );
+  const result = await StudentService.updateSingleStudentInToDB(_id, student);
 
   // send response
   sendResponse(res, {
@@ -51,8 +48,8 @@ const getAllStudents: RequestHandler = catchAsync(async (req, res) => {
 });
 
 const deleteSingleSTudent: RequestHandler = catchAsync(async (req, res) => {
-  const { studentId } = req.params;
-  const result = await StudentService.deleteSingleStudentFromDB(studentId);
+  const { _id } = req.params;
+  const result = await StudentService.deleteSingleStudentFromDB(_id);
 
   // send response
   sendResponse(res, {

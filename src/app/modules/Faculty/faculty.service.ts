@@ -17,19 +17,19 @@ const getAllFacultiesFromDB = async (query: Record<string, unknown>) => {
     .filter()
     .sort()
     .paginate()
-    .fields();
+    .fieldLimit();
 
   const result = await facultyQuery.modelQuery;
   return result;
 };
 
-const getSingleFacultyFromDB = async (id: string) => {
-  const result = await Faculty.findById(id).populate('academicDepartment');
+const getSingleFacultyFromDB = async (_id: string) => {
+  const result = await Faculty.findById(_id).populate('academicDepartment');
 
   return result;
 };
 
-const updateFacultyIntoDB = async (id: string, payload: Partial<TFaculty>) => {
+const updateFacultyIntoDB = async (_id: string, payload: Partial<TFaculty>) => {
   const { name, ...remainingFacultyData } = payload;
 
   const modifiedUpdatedData: Record<string, unknown> = {
@@ -42,21 +42,21 @@ const updateFacultyIntoDB = async (id: string, payload: Partial<TFaculty>) => {
     }
   }
 
-  const result = await Faculty.findByIdAndUpdate(id, modifiedUpdatedData, {
+  const result = await Faculty.findByIdAndUpdate(_id, modifiedUpdatedData, {
     new: true,
     runValidators: true,
   });
   return result;
 };
 
-const deleteFacultyFromDB = async (id: string) => {
+const deleteFacultyFromDB = async (_id: string) => {
   const session = await mongoose.startSession();
 
   try {
     session.startTransaction();
 
     const deletedFaculty = await Faculty.findByIdAndUpdate(
-      id,
+      _id,
       { isDeleted: true },
       { new: true, session },
     );
@@ -66,10 +66,10 @@ const deleteFacultyFromDB = async (id: string) => {
     }
 
     // get user _id from deletedFaculty
-    const userId = deletedFaculty.user;
+    const user_id = deletedFaculty.user_id;
 
     const deletedUser = await User.findByIdAndUpdate(
-      userId,
+      user_id,
       { isDeleted: true },
       { new: true, session },
     );
@@ -89,7 +89,7 @@ const deleteFacultyFromDB = async (id: string) => {
   }
 };
 
-export const FacultyServices = {
+export const facultyServices = {
   getAllFacultiesFromDB,
   getSingleFacultyFromDB,
   updateFacultyIntoDB,

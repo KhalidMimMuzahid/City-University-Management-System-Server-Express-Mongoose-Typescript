@@ -30,9 +30,9 @@ const getAllAcademicSemesters: RequestHandler = catchAsync(async (req, res) => {
   });
 });
 const getSingleAcademicSemesterBy_id = catchAsync(async (req, res) => {
-  const semester_id = req?.params?.semester_id;
+  const _id = req?.params?._id;
   const result =
-    await academicSemesterServices.getSingleAcademicSemesterFromDB(semester_id);
+    await academicSemesterServices.getSingleAcademicSemesterFromDB(_id);
 
   //   send response
   sendResponse(res, {
@@ -43,13 +43,11 @@ const getSingleAcademicSemesterBy_id = catchAsync(async (req, res) => {
   });
 });
 
-
-
 const updateSingleAcademicSemesterBy_id: RequestHandler = catchAsync(
   async (req, res) => {
-    const semester_id = req?.params?.semester_id;
+    const _id = req?.params?._id;
     const result = await academicSemesterServices.updateAcademicSemesterIntoDB(
-      semester_id,
+      _id,
       req.body,
     );
 

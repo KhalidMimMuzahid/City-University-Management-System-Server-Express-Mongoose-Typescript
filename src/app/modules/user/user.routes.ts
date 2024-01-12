@@ -2,7 +2,7 @@ import express, { Router } from 'express';
 import { userControllers } from './user.controller';
 
 import { studentValidations } from '../student/student.validation';
-import validateRequest from '../../utils/validateRequest';
+import validateRequest from '../../middlewares/validateRequest';
 import { facultyValidations } from '../Faculty/faculty.validation';
 import { adminValidations } from '../Admin/admin.validation';
 const router: Router = express.Router();

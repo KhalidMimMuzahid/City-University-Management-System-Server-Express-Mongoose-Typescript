@@ -9,22 +9,18 @@ const getAllAcademicFacultiesFromDB = async () => {
   const result = await AcademicFaculty.find({});
   return result;
 };
-const getSingleAcademicFacultyFromDB = async (faculty_id: string) => {
-  const result = await AcademicFaculty.findOne({ _id: faculty_id });
+const getSingleAcademicFacultyFromDB = async (_id: string) => {
+  const result = await AcademicFaculty.findById(_id);
   return result;
 };
 
 const updateAcademicFacultyIntoDB = async (
-  faculty_id: string,
+  _id: string,
   payload: TAcademicFaculty,
 ) => {
-  const result = await AcademicFaculty.findOneAndUpdate(
-    { _id: faculty_id },
-    payload,
-    {
-      new: true,
-    },
-  );
+  const result = await AcademicFaculty.findByIdAndUpdate(_id, payload, {
+    new: true,
+  });
 
   return result;
 };

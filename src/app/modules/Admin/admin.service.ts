@@ -14,18 +14,18 @@ const getAllAdminsFromDB = async (query: Record<string, unknown>) => {
     .filter()
     .sort()
     .paginate()
-    .fields();
+    .fieldLimit();
 
   const result = await adminQuery.modelQuery;
   return result;
 };
 
-const getSingleAdminFromDB = async (id: string) => {
-  const result = await Admin.findById(id);
+const getSingleAdminFromDB = async (_id: string) => {
+  const result = await Admin.findById(_id);
   return result;
 };
 
-const updateAdminIntoDB = async (id: string, payload: Partial<TAdmin>) => {
+const updateAdminIntoDB = async (_id: string, payload: Partial<TAdmin>) => {
   const { name, ...remainingAdminData } = payload;
 
   const modifiedUpdatedData: Record<string, unknown> = {
@@ -38,21 +38,21 @@ const updateAdminIntoDB = async (id: string, payload: Partial<TAdmin>) => {
     }
   }
 
-  const result = await Admin.findByIdAndUpdate({ id }, modifiedUpdatedData, {
+  const result = await Admin.findByIdAndUpdate(_id, modifiedUpdatedData, {
     new: true,
     runValidators: true,
   });
   return result;
 };
 
-const deleteAdminFromDB = async (id: string) => {
+const deleteAdminFromDB = async (_id: string) => {
   const session = await mongoose.startSession();
 
   try {
     session.startTransaction();
 
     const deletedAdmin = await Admin.findByIdAndUpdate(
-      id,
+      _id,
       { isDeleted: true },
       { new: true, session },
     );
@@ -62,10 +62,10 @@ const deleteAdminFromDB = async (id: string) => {
     }
 
     // get user _id from deletedAdmin
-    const userId = deletedAdmin.user;
+    const user_id = deletedAdmin.user_id;
 
-    const deletedUser = await User.findOneAndUpdate(
-      userId,
+    const deletedUser = await User.findByIdAndUpdate(
+      user_id,
       { isDeleted: true },
       { new: true, session },
     );
@@ -85,7 +85,7 @@ const deleteAdminFromDB = async (id: string) => {
   }
 };
 
-export const AdminServices = {
+export const adminServices = {
   getAllAdminsFromDB,
   getSingleAdminFromDB,
   updateAdminIntoDB,
