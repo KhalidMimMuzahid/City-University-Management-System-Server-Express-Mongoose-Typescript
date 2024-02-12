@@ -9,4 +9,5 @@ export type TCourse = {
   code: number;
   credit: number;
   preRequisiteCourses: TPreRequisiteCourse[];
+  isDeleted?: boolean;
 };

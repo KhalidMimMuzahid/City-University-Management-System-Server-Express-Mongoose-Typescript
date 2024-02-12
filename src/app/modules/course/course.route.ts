@@ -14,11 +14,9 @@ router.get('/', courseControllers.getAllCourses);
 router.get('/:_id', courseControllers.getSingleCourseBy_id);
 router.delete('/:_id', courseControllers.deleteCourseFromDB);
 
-//   router.patch(
-//     '/:_id',
-//     validateRequest(
-//       academicSemesterValidation.updateAcademicSemesterValidationSchemaByZod,
-//     ),
-//     academicSemesterControllers.updateSingleAcademicSemesterBy_id,
-//   );
+  router.patch(
+    '/:_id',
+    validateRequest(courseValidation.updateCourseValidationSchemaByZod),
+    courseControllers.updateSingleCourseBy_id,
+  );
 export const courseRoutes = router;

@@ -12,10 +12,28 @@ const createCourseValidationSchemaByZod = z.object({
     code: z.number(),
     credit: z.number(),
     preRequisiteCourses: z.array(preRequisiteCourseValidationSchema).optional(),
+    isDeleted: z.boolean().optional(),
+  }),
+});
+const updatePreRequisiteCourseValidationSchema = z.object({
+  course: z.string(),
+  isDeleted: z.boolean().optional(),
+});
+
+const updateCourseValidationSchemaByZod = z.object({
+  body: z.object({
+    title: z.string().optional(),
+    prefix: z.string().optional(),
+    code: z.number().optional(),
+    credit: z.number().optional(),
+    preRequisiteCourses: z
+      .array(updatePreRequisiteCourseValidationSchema)
+      .optional(),
+    isDeleted: z.boolean().optional(),
   }),
 });
 
 export const courseValidation = {
   createCourseValidationSchemaByZod,
-  //   updateAcademicSemesterValidationSchemaByZod,
+  updateCourseValidationSchemaByZod,
 };

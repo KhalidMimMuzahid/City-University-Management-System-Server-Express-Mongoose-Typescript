@@ -52,28 +52,23 @@ const deleteCourseFromDB: RequestHandler = catchAsync(async (req, res) => {
   });
 });
 
-// const updateSingleAcademicSemesterBy_id: RequestHandler = catchAsync(
-//   async (req, res) => {
-//     const _id = req?.params?._id;
-//     const result = await academicSemesterServices.updateAcademicSemesterIntoDB(
-//       _id,
-//       req.body,
-//     );
+const updateSingleCourseBy_id: RequestHandler = catchAsync(async (req, res) => {
+  const _id = req?.params?._id;
+  const result = await courseServices.updateCourseIntoDB(_id, req.body);
 
-//     //   send response
-//     sendResponse(res, {
-//       statusCode: httpStatus.OK,
-//       success: true,
-//       message: 'Academic Semester is updated successfully',
-//       data: result,
-//     });
-//   },
-// );
+  //   send response
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Course is updated successfully',
+    data: result,
+  });
+});
 
 export const courseControllers = {
   createCourse,
   getAllCourses,
   getSingleCourseBy_id,
   deleteCourseFromDB,
-  //   updateSingleAcademicSemesterBy_id,
+  updateSingleCourseBy_id,
 };
