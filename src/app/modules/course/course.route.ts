@@ -18,6 +18,11 @@ router.put(
   validateRequest(courseValidation.courseFacultyValidationSchema),
   courseControllers.assignFacultiesToCourse,
 );
+router.delete(
+  '/:course_id/remove-faculties',
+  validateRequest(courseValidation.courseFacultyValidationSchema),
+  courseControllers.removeFacultiesFromCourse,
+);
 router.patch(
   '/:_id',
   validateRequest(courseValidation.updateCourseValidationSchemaByZod),
