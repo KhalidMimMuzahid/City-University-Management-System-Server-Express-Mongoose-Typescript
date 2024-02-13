@@ -1,8 +1,8 @@
 import mongoose from 'mongoose';
 import QueryBuilder from '../../builder/QueryBuilder';
 import { courseSearchableFields } from './course.constant';
-import { TCourse } from './course.interface';
-import { Course } from './course.model';
+import { TCourse, TCourseFaculty } from './course.interface';
+import { Course, CourseFaculty } from './course.model';
 import AppError from '../../errors/AppError';
 import httpStatus from 'http-status';
 
@@ -103,7 +103,6 @@ const updateCourseIntoDB = async (_id: string, payload: Partial<TCourse>) => {
 
     return result;
   } catch (error) {
-    console.log({ error });
     await session.abortTransaction();
     await session.endSession();
     throw new AppError(httpStatus.BAD_REQUEST, 'failed to update course');
@@ -121,10 +120,35 @@ const deleteCourseFromDB = async (_id: string) => {
   );
   return result;
 };
+
+const assignFacultiesToCourseInToDB = async (
+  course_id: string,
+  payload: Partial<TCourseFaculty>,
+) => {
+  // console.log({ course_id, payload });
+  const result = await CourseFaculty.findByIdAndUpdate(
+    course_id,
+    {
+      course: course_id,
+      $addToSet: {
+        faculties: { $each: payload },
+      },
+    },
+    {
+      upsert: true,
+      new: true,
+    },
+  );
+  return result;
+};
+
 export const courseServices = {
   createCourseIntoDB,
   getAllCourseFromDB,
   getSingleCourseFromDB,
   updateCourseIntoDB,
   deleteCourseFromDB,
+  assignFacultiesToCourseInToDB,
 };
+
+
